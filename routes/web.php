@@ -11,7 +11,10 @@
 |
 */
 
-Route::get('/', function () {
+// Route::get('/', function () {
+//     return view('tema');
+// });
+Route::get('/main', function () {
     return view('main');
 });
 // Route::get('ders/{id}',function($id){
@@ -20,7 +23,7 @@ Route::get('/', function () {
 // Route::get('kullanici/{id}', function ($id) {
 //     return 'Kullanıcı '.$id;
 // });
-Route::post('/main','MainController@main');
+Route::post('/tema','MainController@store');
 
 
 

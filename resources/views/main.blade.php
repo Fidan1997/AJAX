@@ -1,7 +1,7 @@
 <html>
 	
 <head>
-<meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="_token" content="{{ csrf_token() }}">
 <script
   src="https://code.jquery.com/jquery-2.2.4.js"
   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
@@ -28,7 +28,7 @@ tr:nth-child(even) {
 
 </head>
 <body>
-	<form method="post" id="idOfForm">
+	<form method="post" id="my_form">
 	{{csrf_field()}}
 		<input type="text" class="inputTop" name="name"><br>
         <input type="text" class="inputBottom" name="password"><br>
@@ -37,44 +37,74 @@ tr:nth-child(even) {
 
 	</form>
 
-<table>
- <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
- 
-  
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-</table>
+<table id='myTable'></table>
 
 
 </body>
 </html>
 <script>
-    // $('.submit').on('click' , function () {
-    //     var data = $('.inputTop').val();
-    //     $('.inputBottom').val(data);
-    // })
+    $(document).ready(function(){
+      $('#my_form').on('submit',function(e){
+        e.preventDefault();
+
+        name = $('[name=name]').val();
+        password = $('[name=password]').val();
+        user = $('[name=user]').val();
+
+        tr = $('<tr>');
+        tdName = $('<td>').append(name);
+        tdPassword = $('<td>').append(password);
+        tdUser = $('<td>').append(user);
+
+        tr.append(tdName, [tdPassword, tdUser]);
+        $('#myTable').append(tr);
+
+        $.ajax({
+            type: "POST",
+            url: '/tema',
+            data: {'name': name,
+                   'password' : password,
+                   'user' : user, 
+                   "_token": "{{ csrf_token() }}",},
+
+            success: function() {
+                // $("#ajaxResponse").append("<div>"+msg+"</div>");
+                console.log('tema alindi');
+            }
+        });
+        // console.warn(tr);
+        // tr.append(tdName);
+        // tr.append(tdPassword);
+        // tr.append(tdUser);
+        // $('.myTable').append(td);
+
+
+
+  // console.log(name, password, user);
+
+/*        $.ajax({
+            url: "http://data.e-gov.az/api/v1/IEGOVService.svc/GetPriceInfoByShortNumber/"+inp_name+"",
+            crossDomain: true,
+            dataType: 'json',
+            type: "GET",
+            data:{
+                // name: $('.name').val(),
+                // password: $('.inputBottom').val(),
+                // user: $('.user').val(),
+            },
+            headers:{
+                    'X-CSRF-TOKEN':$('meta[name="_token"]').attr('content'),
+                    'Access-Control-Allow-Origin': '*'
+            },
+            success: function test(data){
+
+                console.log(data);
+
+            }});*/
+})
+
+
+});
 </script>
 
 
